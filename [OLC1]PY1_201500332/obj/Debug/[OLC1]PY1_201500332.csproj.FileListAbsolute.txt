@@ -1,0 +1,9 @@
+C:\Users\Oliveira Raymundo\Documents\gaby\semestre6\OLC1\[OLC1]PY1_201500332\[OLC1]PY1_201500332\bin\Debug\[OLC1]PY1_201500332.exe.config
+C:\Users\Oliveira Raymundo\Documents\gaby\semestre6\OLC1\[OLC1]PY1_201500332\[OLC1]PY1_201500332\bin\Debug\[OLC1]PY1_201500332.exe
+C:\Users\Oliveira Raymundo\Documents\gaby\semestre6\OLC1\[OLC1]PY1_201500332\[OLC1]PY1_201500332\bin\Debug\[OLC1]PY1_201500332.pdb
+C:\Users\Oliveira Raymundo\Documents\gaby\semestre6\OLC1\[OLC1]PY1_201500332\[OLC1]PY1_201500332\obj\Debug\[OLC1]PY1_201500332.csprojAssemblyReference.cache
+C:\Users\Oliveira Raymundo\Documents\gaby\semestre6\OLC1\[OLC1]PY1_201500332\[OLC1]PY1_201500332\obj\Debug\_OLC1_PY1_201500332.Form1.resources
+C:\Users\Oliveira Raymundo\Documents\gaby\semestre6\OLC1\[OLC1]PY1_201500332\[OLC1]PY1_201500332\obj\Debug\_OLC1_PY1_201500332.Properties.Resources.resources
+C:\Users\Oliveira Raymundo\Documents\gaby\semestre6\OLC1\[OLC1]PY1_201500332\[OLC1]PY1_201500332\obj\Debug\[OLC1]PY1_201500332.csproj.GenerateResource.cache
+C:\Users\Oliveira Raymundo\Documents\gaby\semestre6\OLC1\[OLC1]PY1_201500332\[OLC1]PY1_201500332\obj\Debug\[OLC1]PY1_201500332.exe
+C:\Users\Oliveira Raymundo\Documents\gaby\semestre6\OLC1\[OLC1]PY1_201500332\[OLC1]PY1_201500332\obj\Debug\[OLC1]PY1_201500332.pdb
