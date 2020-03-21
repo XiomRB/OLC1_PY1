@@ -15,7 +15,7 @@ namespace _OLC1_PY1_201500332
     public partial class Form1 : Form
     {
         Archivo archivo = new Archivo();
-        AnalisisArchivo lexico = new AnalisisArchivo();
+        AnalisisSintArch sint;
         public Form1()
         {
             InitializeComponent();
@@ -57,10 +57,27 @@ namespace _OLC1_PY1_201500332
         {
             if (!this.pestañas.SelectedTab.Controls[0].Text.Equals(""))
             {
-                this.consola.Text = lexico.analizar((RichTextBox)this.pestañas.SelectedTab.Controls[0]);
-                foreach(Token tok in lexico.errores)
+                sint = new AnalisisSintArch();
+                ArrayList cadenas = new ArrayList();
+                ArrayList conjuntos = new ArrayList();
+                ArrayList expre = new ArrayList();
+                sint.analizar((RichTextBox)this.pestañas.SelectedTab.Controls[0], conjuntos, expre, cadenas);
+                foreach(CadenaAValidar cad in cadenas)
                 {
-                    consola.Text += "\n" + tok.getLexema() + "  , linea: " + tok.getLinea();
+                    this.consola.Text += cad.getId() + ": " + cad.getCadena() + "\n";
+                }
+                foreach(Conjunto conj in conjuntos)
+                {
+                    this.consola.Text += conj.nombre + ": " + conj.conjunto +"\n";
+                }
+                foreach(ExpresionRegular exp in expre)
+                {
+                    this.consola.Text += exp.getId() + ": ";
+                    foreach(Object [] l in exp.getLista())
+                    {
+                            this.consola.Text += l[0].ToString();
+                    }
+                    this.consola.Text += "\n";
                 }
             }
         }
@@ -68,12 +85,12 @@ namespace _OLC1_PY1_201500332
         private void lexicToolStripMenuItem_Click(object sender, EventArgs e)
         {
             PrincipalAFN afn = new PrincipalAFN();
-            SubAFN afnf = afn.crearKleene(afn.crearBasico("a"));
+            SubAFN afnf = afn.crearUnaoNinguna(afn.crearBasico("a"));
             foreach(Estado edo in afnf.getEstados())
             {
                 foreach(TransicionThompson trans in edo.getTransiciones())
                 {
-                    this.consola.Text += trans.getInicio().getId().ToString() + "--" + trans.getLexema() + "--" + trans.getFinal().getId().ToString() + "\n";
+                    this.consola.Text += trans.getInicio().getId().ToString() + "--" + trans.getLexema() + "--" + trans.getFinal().getId().ToString()+"\n";
                 }
             }
         }

@@ -46,7 +46,72 @@ namespace _OLC1_PY1_201500332.Logica
             finbasico.setTransicion(new TransicionThompson(finbasico, inibasico,"ε"));
             finbasico.setTransicion(new TransicionThompson(finbasico, fin,"ε"));
             return kleene;
+        }
+        public SubAFN crearConcatenacion(SubAFN basico1, SubAFN basico2)
+        {
+            SubAFN concatenacion = new SubAFN();
+            int e = 0;
+            for(e = 0; e < basico1.getEstados().Count-1; e++)
+            {
+                Estado aux = (Estado)basico1.getEstado(e);
+                aux.setId(e);
+                if (e == 0) concatenacion.setInicial(aux);
+                concatenacion.setEstado(aux);
+            }
+            for(int i = 0; i<basico2.getEstados().Count; i++)
+            {
+                Estado aux = (Estado)basico2.getEstado(i);
+                aux.setId(e);
+                if (i == basico2.getEstados().Count - 1) concatenacion.setFinal(aux);
+                concatenacion.setEstado(aux);
+                e++;
+            }
+            return concatenacion;
+        }
+        public SubAFN crearOr(SubAFN basico1,SubAFN basico2)
+        {
+            SubAFN or = new SubAFN();
+            Estado inicial = new Estado(0);
+            inicial.setTransicion(new TransicionThompson(inicial, basico1.getInicial(), "ε"));
+            inicial.setTransicion(new TransicionThompson(inicial, basico2.getInicial(), "ε"));
+            or.setEstado(inicial);
+            or.setInicial(inicial);
+            int e = 0;
+            int basico1tam = basico1.getEstados().Count;
+            int basico2tam = basico2.getEstados().Count;
+            for (e = 0; e< basico1tam; e++)
+            {
+                Estado aux = (Estado)basico1.getEstado(e);
+                aux.setId(e + 1);
+                or.setEstado(aux);
+            }
+            for(int i = 0; i < basico2tam; i++)
+            {
+                Estado aux = (Estado)basico2.getEstado(i);
+                aux.setId(e + 1);
+                or.setEstado(aux);
+                e++;
+            }
+            Estado final = new Estado(basico1tam + basico2tam + 1);
+            or.setFinal(final);
+            or.setEstado(final);
 
+            Estado basico1fin = basico1.getFinal();
+            Estado basico2fin = basico2.getFinal();
+            basico1fin.setTransicion(new TransicionThompson(basico1fin, final,"ε"));
+            basico2fin.setTransicion(new TransicionThompson(basico2fin, final, "ε"));
+            return or;
+        }
+        public SubAFN crearPositiva(string simbolo)
+        {
+            SubAFN kleene = this.crearKleene(this.crearBasico(simbolo));
+            return this.crearConcatenacion(this.crearBasico(simbolo), kleene);
+        }
+
+        public SubAFN crearUnaoNinguna(SubAFN basico)
+        {
+            SubAFN ningun = this.crearBasico("ε");
+            return this.crearOr(basico, ningun);
         }
     }
 }
