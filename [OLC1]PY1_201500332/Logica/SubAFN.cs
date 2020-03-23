@@ -11,11 +11,12 @@ namespace _OLC1_PY1_201500332.Logica
     {
         private Estado inicial;
         private Estado final;
-        private ArrayList estados = new ArrayList();
+        private List<Estado> estados = new List<Estado>();
+        PrincipalAFN principal = new PrincipalAFN();
 
         public SubAFN()
         {
-            this.estados = new ArrayList();
+            this.estados = new List<Estado>();
         }
 
         public Estado getInicial()
@@ -30,9 +31,13 @@ namespace _OLC1_PY1_201500332.Logica
         {
             return (Estado) this.estados[indice];
         }
-        public ArrayList getEstados()
+        public List<Estado> getEstados()
         {
             return this.estados;
+        }
+        public void setEstados(List<Estado> estados)
+        {
+            this.estados = estados;
         }
         public void setInicial(Estado inicio)
         {
@@ -45,6 +50,16 @@ namespace _OLC1_PY1_201500332.Logica
         public void setEstado(Estado estado)
         {
             this.estados.Add(estado);
+        }
+
+        public string dibujar()
+        {
+            string dibujo = " rankdir = LR;\n  node[shape = circle];\n ";
+            dibujo += this.getFinal().getId() + " [shape = doublecircle] " + ";\n";
+            foreach (Estado e in this.estados)
+                foreach (TransicionThompson t in e.getTransiciones())
+                    dibujo +=" " + t.getInicio().getId() + " -> " + t.getFinal().getId() + "[label = \"" + t.getLexema() + "\"];\n";
+            return dibujo;
         }
     }
 

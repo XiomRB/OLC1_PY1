@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,6 +34,7 @@ namespace _OLC1_PY1_201500332.Logica
             {
                 Estado aux = (Estado)basico.getEstado(i);
                 aux.setId(i + 1);
+                Console.WriteLine(aux.getId().ToString());
                 kleene.setEstado(aux);
             }
             Estado fin = new Estado(tam + 1);
@@ -42,9 +44,9 @@ namespace _OLC1_PY1_201500332.Logica
             Estado finbasico = basico.getFinal();
             //verificar
             inicio.setTransicion(new TransicionThompson(inicio, inibasico, "ε"));
-            inicio.setTransicion(new TransicionThompson(inicio, fin,"ε"));
-            finbasico.setTransicion(new TransicionThompson(finbasico, inibasico,"ε"));
-            finbasico.setTransicion(new TransicionThompson(finbasico, fin,"ε"));
+            inicio.setTransicion(new TransicionThompson(inicio, fin, "ε"));
+            finbasico.setTransicion(new TransicionThompson(finbasico, inibasico, "ε"));
+            finbasico.setTransicion(new TransicionThompson(finbasico, fin, "ε"));
             return kleene;
         }
         public SubAFN crearConcatenacion(SubAFN basico1, SubAFN basico2)
@@ -102,16 +104,72 @@ namespace _OLC1_PY1_201500332.Logica
             basico2fin.setTransicion(new TransicionThompson(basico2fin, final, "ε"));
             return or;
         }
-        public SubAFN crearPositiva(string simbolo)
+        public SubAFN crearPositiva(SubAFN basico)
         {
-            SubAFN kleene = this.crearKleene(this.crearBasico(simbolo));
-            return this.crearConcatenacion(this.crearBasico(simbolo), kleene);
+            SubAFN b1 = new SubAFN();
+            foreach(Estado e in basico.getEstados())
+            {
+                int en = e.getId();
+                Estado aux = new Estado(en);
+                foreach(TransicionThompson t in e.getTransiciones())
+                {
+                    int ti = t.getInicio().getId();
+                    Estado temp = new Estado(ti);
+                    int tf = t.getFinal().getId();
+                    Estado temp1 = new Estado(tf);
+                    string l = t.getLexema();
+                    aux.setTransicion(new TransicionThompson(temp, temp1, l));
+                }
+                b1.setEstado(aux);
+            }
+            b1.setInicial(b1.getEstado(0));
+            b1.setFinal(b1.getEstado(b1.getEstados().Count - 1));
+            SubAFN kleene = this.crearKleene(basico);
+            return this.crearConcatenacion(b1, kleene);
         }
 
         public SubAFN crearUnaoNinguna(SubAFN basico)
         {
             SubAFN ningun = this.crearBasico("ε");
             return this.crearOr(basico, ningun);
+        }
+        public SubAFN crearAFN(Stack<Object[]> p, Stack<object[]> simbolos)
+        {
+            Stack<SubAFN> pila = new Stack<SubAFN>();
+            while (p.Count != 0)
+            {
+                Object[] simbolo = p.Pop();
+                Token.TIPO tipo = (Token.TIPO)simbolo[1];
+                switch (tipo)
+                {
+                    case Token.TIPO.CADENA:
+                    case Token.TIPO.TODO:
+                    case Token.TIPO.CONJ:
+                    case Token.TIPO.TAB:
+                    case Token.TIPO.ENTER:
+                    case Token.TIPO.COMILLA:
+                    case Token.TIPO.APOSTROFE:
+                        simbolos.Push(simbolo);
+                        pila.Push(this.crearBasico((string)simbolo[0]));
+                        break;
+                    case Token.TIPO.CONCATENACION:
+                        pila.Push(this.crearConcatenacion(pila.Pop(),pila.Pop()));
+                        break;
+                    case Token.TIPO.OR:
+                        pila.Push(this.crearOr(pila.Pop(),pila.Pop()));
+                        break;
+                    case Token.TIPO.CERRADURAKLEENE:
+                        pila.Push(this.crearKleene(pila.Pop()));
+                        break;
+                    case Token.TIPO.CERRADURAPOSITIVA:
+                        pila.Push(this.crearPositiva(pila.Pop()));
+                        break;
+                    case Token.TIPO.INTERROGACION:
+                        pila.Push(this.crearUnaoNinguna(pila.Pop()));
+                        break;
+                }
+            }
+            return pila.Peek();
         }
     }
 }

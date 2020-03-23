@@ -11,6 +11,7 @@ namespace _OLC1_PY1_201500332.Logica
     class AnalisisSintArch
     {
         AnalisisLexicoArch lexico;
+        PrincipalAFN p = new PrincipalAFN();
         int i = 0;
         public AnalisisSintArch()
         {
@@ -37,7 +38,7 @@ namespace _OLC1_PY1_201500332.Logica
                             }else
                             {
                                 i += 2;
-                                ArrayList lista = new ArrayList();
+                                Stack<Object []> lista = new Stack<Object[]>();
                                 while(tokensig.getTipo()!= Token.TIPO.PUNTOCOMA)
                                 {
                                     switch (tokensig.getTipo())
@@ -51,15 +52,15 @@ namespace _OLC1_PY1_201500332.Logica
                                         case Token.TIPO.TAB:
                                         case Token.TIPO.COMILLA:
                                         case Token.TIPO.APOSTROFE:
-                                            lista.Add(new Object[2] { tokensig.getLexema(), tokensig.getTipo() });
+                                            lista.Push(new object[2] { tokensig.getLexema(), tokensig.getTipo() });
                                             break;
                                         case Token.TIPO.TODO:
                                             int l = tokensig.getLexema().Length;
-                                            lista.Add(new Object[2] { tokensig.getLexema().Substring(2,l-4), tokensig.getTipo() });
+                                            lista.Push(new object[2] { tokensig.getLexema().Substring(2,l-4), tokensig.getTipo() });
                                             break;
                                         case Token.TIPO.CADENA:
                                             int m = tokensig.getLexema().Length;
-                                            lista.Add(new Object[2] { tokensig.getLexema().Substring(1, m - 2), tokensig.getTipo() });
+                                            lista.Push(new object[2] { tokensig.getLexema().Substring(1, m - 2), tokensig.getTipo() });
                                             break;
                                         case Token.TIPO.LLAVEABRE:
                                             tokensig = (Token)tokens[i + 1];
@@ -72,12 +73,11 @@ namespace _OLC1_PY1_201500332.Logica
                                                     conj = (Conjunto)conjuntos[c];
                                                     if (tokensig.getLexema().Equals(conj.nombre))
                                                     {
-                                                        lista.Add(new Object[2] { tokensig.getLexema(), tokensig.getTipo() });
+                                                        lista.Push(new object[2] { tokensig.getLexema(), Token.TIPO.CONJ });
                                                         break;
                                                     }
                                                     c++;
-                                                }
-                                                
+                                                }                                                
                                             }
                                             i += 2;
                                             break;
@@ -85,7 +85,9 @@ namespace _OLC1_PY1_201500332.Logica
                                     i++;
                                     tokensig = (Token)tokens[i];
                                 }
-                                expresiones.Add(new ExpresionRegular(token.getLexema(), lista));
+                                ExpresionRegular exp = new ExpresionRegular(token.getLexema());
+                                exp.setAFN(p.crearAFN(lista, exp.simbolos));
+                                expresiones.Add(exp);
                             }
 
                             break;
@@ -100,38 +102,6 @@ namespace _OLC1_PY1_201500332.Logica
                             break;
                     }
                 }
-            }
-        }
-
-        public void tomarExpresion(ArrayList toks)
-        {
-            Token tok = (Token) toks[i];
-            switch (tok.getTipo())
-            {
-                case Token.TIPO.CADENA:
-                    break;
-                case Token.TIPO.LLAVEABRE:
-                    break;
-                case Token.TIPO.TODO:
-                    break;
-                case Token.TIPO.ENTER:
-                    break;
-                case Token.TIPO.TAB:
-                    break;
-                case Token.TIPO.COMILLA:
-                    break;
-                case Token.TIPO.APOSTROFE:
-                    break;
-                case Token.TIPO.CERRADURAKLEENE:
-                    break;
-                case Token.TIPO.CERRADURAPOSITIVA:
-                    break;
-                case Token.TIPO.CONCATENACION:
-                    break;
-                case Token.TIPO.OR:
-                    break;
-                case Token.TIPO.INTERROGACION:
-                    break;
             }
         }
     }

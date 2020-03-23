@@ -53,11 +53,11 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Logica\AFNThompson.cs" />
     <Compile Include="Logica\AnalisisLexicoArch.cs" />
     <Compile Include="Logica\AnalisisSintArch.cs" />
     <Compile Include="Logica\CadenaAValidar.cs" />
     <Compile Include="Logica\Conjunto.cs" />
+    <Compile Include="Logica\Ejecutar.cs" />
     <Compile Include="Logica\Estado.cs" />
     <Compile Include="Logica\ExpresionRegular.cs" />
     <Compile Include="Logica\PrincipalAFN.cs" />

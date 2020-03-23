@@ -16,6 +16,7 @@ namespace _OLC1_PY1_201500332
     {
         Archivo archivo = new Archivo();
         AnalisisSintArch sint;
+        Ejecutar ejecutar = new Ejecutar();
         public Form1()
         {
             InitializeComponent();
@@ -55,44 +56,30 @@ namespace _OLC1_PY1_201500332
 
         private void cargarThompsonToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            string graph;
             if (!this.pestañas.SelectedTab.Controls[0].Text.Equals(""))
             {
                 sint = new AnalisisSintArch();
-                ArrayList cadenas = new ArrayList();
-                ArrayList conjuntos = new ArrayList();
-                ArrayList expre = new ArrayList();
-                sint.analizar((RichTextBox)this.pestañas.SelectedTab.Controls[0], conjuntos, expre, cadenas);
-                foreach(CadenaAValidar cad in cadenas)
+                sint.analizar((RichTextBox)this.pestañas.SelectedTab.Controls[0], ejecutar.conjuntos, ejecutar.expresiones, ejecutar.cadenas);
+                foreach(ExpresionRegular exp in ejecutar.expresiones)
                 {
-                    this.consola.Text += cad.getId() + ": " + cad.getCadena() + "\n";
-                }
-                foreach(Conjunto conj in conjuntos)
-                {
-                    this.consola.Text += conj.nombre + ": " + conj.conjunto +"\n";
-                }
-                foreach(ExpresionRegular exp in expre)
-                {
-                    this.consola.Text += exp.getId() + ": ";
-                    foreach(Object [] l in exp.getLista())
-                    {
-                            this.consola.Text += l[0].ToString();
-                    }
-                    this.consola.Text += "\n";
+                    graph = archivo.graficar("AFNs", exp.getId(), exp.getAFN().dibujar());
+                    if (graph.Equals("exito")) MessageBox.Show("AFN creado");
+                    else MessageBox.Show("No se pudo crear el AFN");
                 }
             }
         }
 
         private void lexicToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PrincipalAFN afn = new PrincipalAFN();
-            SubAFN afnf = afn.crearUnaoNinguna(afn.crearBasico("a"));
-            foreach(Estado edo in afnf.getEstados())
-            {
-                foreach(TransicionThompson trans in edo.getTransiciones())
+             PrincipalAFN afn = new PrincipalAFN();
+            SubAFN afnf = afn.crearPositiva(afn.crearBasico("A"));
+            foreach (Estado edo in afnf.getEstados())
+                foreach (TransicionThompson trans in edo.getTransiciones())
                 {
-                    this.consola.Text += trans.getInicio().getId().ToString() + "--" + trans.getLexema() + "--" + trans.getFinal().getId().ToString()+"\n";
+                    this.consola.Text += trans.getInicio().getId() + " - " + trans.getLexema() + " - " + trans.getFinal().getId() + "\n";
                 }
-            }
+
         }
     }
 

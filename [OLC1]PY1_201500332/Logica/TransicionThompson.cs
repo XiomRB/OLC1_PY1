@@ -8,36 +8,32 @@ namespace _OLC1_PY1_201500332.Logica
 {
     class TransicionThompson
     {
-        private Estado inicial;
-        private Estado final;
+        private Estado edoinicial;
+        private Estado edofinal;
         private string lexema;
 
         public TransicionThompson(Estado inicio, Estado final, string lexema)
         {
-            this.inicial = inicio;
-            this.final = final;
+            this.edoinicial = inicio;
+            this.edofinal = final;
             this.lexema = lexema;
         }
-
         public void setInicio(Estado inicio)
         {
-            this.inicial = inicio;
+            this.edoinicial = inicio;
         }
-
         public void setFinal(Estado final)
         {
-            this.final = final;
+            this.edofinal = final;
         }
         public Estado getInicio()
         {
-            return this.inicial;
+            return this.edoinicial;
         }
-
         public Estado getFinal()
         {
-            return this.final;
+            return this.edofinal;
         }
-
         public string getLexema()
         {
             return this.lexema;

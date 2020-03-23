@@ -9,28 +9,26 @@ namespace _OLC1_PY1_201500332.Logica
 {
     class ExpresionRegular
     {
-        string id;
-        ArrayList lista;
-        public ExpresionRegular(string id, ArrayList lista)
+        private string id;
+        public Stack<object[]> simbolos;
+        private SubAFN afn;
+        public ExpresionRegular(string id)
         {
             this.id = id;
-            this.lista = lista;
-        }
-        public void setElemento(string el)
-        {
-            this.lista.Add(el);
-        }
-        public string getElemento(int i)
-        {
-            return (string)this.lista[i];
-        }
-        public ArrayList getLista()
-        {
-            return this.lista;
+            this.simbolos = new Stack<object[]>();
+            this.afn = new SubAFN();
         }
         public string getId()
         {
             return this.id;
+        }
+        public void setAFN(SubAFN afn)
+        {
+            this.afn = afn;
+        }
+        public SubAFN getAFN()
+        {
+            return this.afn;
         }
     }
 }

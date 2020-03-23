@@ -10,10 +10,9 @@ namespace _OLC1_PY1_201500332.Logica
     class Estado
     {
         private int id;
-        private bool acepta;
-        private ArrayList transiciones  = new ArrayList();
+        private List<TransicionThompson> transiciones  = new List<TransicionThompson>();
 
-        public Estado(int id, ArrayList transiciones)
+        public Estado(int id, List<TransicionThompson> transiciones)
         {
             this.id = id;
             this.transiciones = transiciones;
@@ -33,11 +32,14 @@ namespace _OLC1_PY1_201500332.Logica
         {
             this.id = id;
         }
-        public ArrayList getTransiciones()
+        public List<TransicionThompson> getTransiciones()
         {
             return this.transiciones;
         }
-
+        public void setTransiciones(List<TransicionThompson> transiciones)
+        {
+            this.transiciones = transiciones;
+        }
         public int getId()
         {
             return this.id;
