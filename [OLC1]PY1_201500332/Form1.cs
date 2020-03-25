@@ -67,18 +67,15 @@ namespace _OLC1_PY1_201500332
                     if (graph.Equals("exito")) MessageBox.Show("AFN creado");
                     else MessageBox.Show("No se pudo crear el AFN");
                 }
+
             }
         }
 
         private void lexicToolStripMenuItem_Click(object sender, EventArgs e)
         {
-             PrincipalAFN afn = new PrincipalAFN();
-            SubAFN afnf = afn.crearPositiva(afn.crearBasico("A"));
-            foreach (Estado edo in afnf.getEstados())
-                foreach (TransicionThompson trans in edo.getTransiciones())
-                {
-                    this.consola.Text += trans.getInicio().getId() + " - " + trans.getLexema() + " - " + trans.getFinal().getId() + "\n";
-                }
+            ejecutar.crearAFD();
+            foreach(ExpresionRegular exp in ejecutar.expresiones)
+                archivo.graficar("AFDs", exp.getId(), exp.afd.dibujar());
 
         }
     }

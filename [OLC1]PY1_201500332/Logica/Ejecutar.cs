@@ -19,5 +19,10 @@ namespace _OLC1_PY1_201500332.Logica
             this.conjuntos = new ArrayList();
             this.cadenas = new ArrayList();
         }
+        public void crearAFD()
+        {
+            foreach(ExpresionRegular exp in expresiones)
+                exp.afd.crearTransiciones(exp.getAFN(),exp.simbolos);
+        }
     }
 }

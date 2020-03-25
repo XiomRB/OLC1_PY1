@@ -59,7 +59,9 @@
     <Compile Include="Logica\Conjunto.cs" />
     <Compile Include="Logica\Ejecutar.cs" />
     <Compile Include="Logica\Estado.cs" />
+    <Compile Include="Logica\EstadoAFD.cs" />
     <Compile Include="Logica\ExpresionRegular.cs" />
+    <Compile Include="Logica\Movimiento.cs" />
     <Compile Include="Logica\PrincipalAFN.cs" />
     <Compile Include="Logica\SubAFN.cs" />
     <Compile Include="Logica\Token.cs" />

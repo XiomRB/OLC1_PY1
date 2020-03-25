@@ -12,11 +12,13 @@ namespace _OLC1_PY1_201500332.Logica
         private string id;
         public Stack<object[]> simbolos;
         private SubAFN afn;
+        public Transicion afd;
         public ExpresionRegular(string id)
         {
             this.id = id;
             this.simbolos = new Stack<object[]>();
             this.afn = new SubAFN();
+            afd = new Transicion();
         }
         public string getId()
         {

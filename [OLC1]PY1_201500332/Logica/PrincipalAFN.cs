@@ -25,24 +25,31 @@ namespace _OLC1_PY1_201500332.Logica
 
         public SubAFN crearKleene(SubAFN basico)
         {
-            int tam = basico.getEstados().Count;
+            SubAFN b = nuevo(basico);
+            int tam = b.getEstados().Count;
             SubAFN kleene = new SubAFN();
             Estado inicio = new Estado(0);
             kleene.setEstado(inicio);
             kleene.setInicial(inicio);
             for(int i = 0; i < tam; i++)
             {
-                Estado aux = (Estado)basico.getEstado(i);
+                Estado aux = b.getEstado(i);
                 aux.setId(i + 1);
-                Console.WriteLine(aux.getId().ToString());
+                foreach (TransicionThompson t in b.getEstado(i).getTransiciones())
+                {
+                    t.getInicio().setId(i + 1);
+                    t.getFinal().setId(t.getFinal().getId() + 1);
+                }
+
+                if (i == 0) b.setInicial(aux);
+                if (i == tam - 1) b.setFinal(aux);
                 kleene.setEstado(aux);
             }
             Estado fin = new Estado(tam + 1);
             kleene.setEstado(fin);
             kleene.setFinal(fin);
-            Estado inibasico = basico.getInicial();
-            Estado finbasico = basico.getFinal();
-            //verificar
+            Estado inibasico = b.getInicial();
+            Estado finbasico = b.getFinal();
             inicio.setTransicion(new TransicionThompson(inicio, inibasico, "ε"));
             inicio.setTransicion(new TransicionThompson(inicio, fin, "ε"));
             finbasico.setTransicion(new TransicionThompson(finbasico, inibasico, "ε"));
@@ -51,20 +58,27 @@ namespace _OLC1_PY1_201500332.Logica
         }
         public SubAFN crearConcatenacion(SubAFN basico1, SubAFN basico2)
         {
+            SubAFN conc2 = nuevo(basico2);
             SubAFN concatenacion = new SubAFN();
             int e = 0;
             for(e = 0; e < basico1.getEstados().Count-1; e++)
             {
-                Estado aux = (Estado)basico1.getEstado(e);
+                Estado aux = basico1.getEstado(e);
                 aux.setId(e);
                 if (e == 0) concatenacion.setInicial(aux);
                 concatenacion.setEstado(aux);
             }
-            for(int i = 0; i<basico2.getEstados().Count; i++)
+            int tf = e - conc2.getEstado(0).getId();
+            for (int i = 0; i<conc2.getEstados().Count; i++)
             {
-                Estado aux = (Estado)basico2.getEstado(i);
+                Estado aux = conc2.getEstado(i);
                 aux.setId(e);
-                if (i == basico2.getEstados().Count - 1) concatenacion.setFinal(aux);
+                foreach (TransicionThompson t in aux.getTransiciones())
+                {
+                    t.getInicio().setId(e);
+                    t.getFinal().setId(t.getFinal().getId() + tf);
+                }
+                if (i == conc2.getEstados().Count - 1) concatenacion.setFinal(aux);
                 concatenacion.setEstado(aux);
                 e++;
             }
@@ -72,34 +86,46 @@ namespace _OLC1_PY1_201500332.Logica
         }
         public SubAFN crearOr(SubAFN basico1,SubAFN basico2)
         {
+            SubAFN b1 = nuevo(basico1);
+            SubAFN b2 = nuevo(basico2);
             SubAFN or = new SubAFN();
             Estado inicial = new Estado(0);
-            inicial.setTransicion(new TransicionThompson(inicial, basico1.getInicial(), "ε"));
-            inicial.setTransicion(new TransicionThompson(inicial, basico2.getInicial(), "ε"));
+            inicial.setTransicion(new TransicionThompson(inicial, b1.getInicial(), "ε"));
+            inicial.setTransicion(new TransicionThompson(inicial, b2.getInicial(), "ε"));
             or.setEstado(inicial);
             or.setInicial(inicial);
             int e = 0;
-            int basico1tam = basico1.getEstados().Count;
-            int basico2tam = basico2.getEstados().Count;
+            int basico1tam = b1.getEstados().Count;
+            int basico2tam = b2.getEstados().Count;
             for (e = 0; e< basico1tam; e++)
             {
-                Estado aux = (Estado)basico1.getEstado(e);
+                Estado aux = b1.getEstado(e);
                 aux.setId(e + 1);
-                or.setEstado(aux);
+                foreach (TransicionThompson t in aux.getTransiciones())
+                {
+                    t.getInicio().setId(e + 1);
+                    t.getFinal().setId(t.getFinal().getId() + 1);
+                }
+                or.setEstado(aux); 
             }
+            int tf = e + 1;
             for(int i = 0; i < basico2tam; i++)
             {
-                Estado aux = (Estado)basico2.getEstado(i);
+                Estado aux = b2.getEstado(i);
                 aux.setId(e + 1);
+                foreach (TransicionThompson t in aux.getTransiciones())
+                {
+                    t.getInicio().setId(e+1);
+                    t.getFinal().setId(t.getFinal().getId() + tf);
+                }
                 or.setEstado(aux);
                 e++;
             }
             Estado final = new Estado(basico1tam + basico2tam + 1);
             or.setFinal(final);
             or.setEstado(final);
-
-            Estado basico1fin = basico1.getFinal();
-            Estado basico2fin = basico2.getFinal();
+            Estado basico1fin = b1.getFinal();
+            Estado basico2fin = b2.getFinal();
             basico1fin.setTransicion(new TransicionThompson(basico1fin, final,"ε"));
             basico2fin.setTransicion(new TransicionThompson(basico2fin, final, "ε"));
             return or;
@@ -170,6 +196,27 @@ namespace _OLC1_PY1_201500332.Logica
                 }
             }
             return pila.Peek();
+        }
+        public SubAFN nuevo(SubAFN b)
+        {
+            SubAFN b1 = new SubAFN();
+            foreach (Estado e in b.getEstados())
+            {
+                int en = e.getId();
+                Estado aux = new Estado(en);
+                foreach (TransicionThompson t in e.getTransiciones())
+                {
+                    Estado temp = new Estado(en);
+                    int tf = t.getFinal().getId();
+                    Estado temp1 = new Estado(tf);
+                    string l = t.getLexema();
+                    aux.setTransicion(new TransicionThompson(temp, temp1, l));
+                }
+                b1.setEstado(aux);
+            }
+            b1.setInicial(b1.getEstado(0));
+            b1.setFinal(b1.getEstado(b1.getEstados().Count - 1));
+            return b1;
         }
     }
 }
