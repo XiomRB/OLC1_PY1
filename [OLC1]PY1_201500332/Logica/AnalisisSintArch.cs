@@ -73,7 +73,7 @@ namespace _OLC1_PY1_201500332.Logica
                                                     conj = (Conjunto)conjuntos[c];
                                                     if (tokensig.getLexema().Equals(conj.nombre))
                                                     {
-                                                        lista.Push(new object[2] { tokensig.getLexema(), Token.TIPO.CONJ });
+                                                        lista.Push(new object[2] { conj.conjunto, Token.TIPO.CONJ });
                                                         break;
                                                     }
                                                     c++;

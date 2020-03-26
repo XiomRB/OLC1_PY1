@@ -43,7 +43,7 @@ namespace _OLC1_PY1_201500332.Logica
                     if (exp.afd.getEstado(estado).isAceptable()) cadena.tokens.Add(new Token(0, i, tok, Token.TIPO.CADENA));
                     else cadena.errores.Add(new Token(0, i, tok, Token.TIPO.DESCONOCIDO));
                     tok = "";
-                    if (i < cad.Length - 1 || estado == 0) i--;
+                    if (i < cad.Length - 1 && estado != 0) i--;
                     estado = 0;
                 }
                 else
@@ -67,6 +67,8 @@ namespace _OLC1_PY1_201500332.Logica
                         }
                         else if (mov.getTipo() == Token.TIPO.CONJ)
                         {
+
+                            Console.WriteLine(mov.getId());
                             if (mov.getId().Length == 1)
                             {
                                 if (c.ToString() == mov.getId())
@@ -189,7 +191,7 @@ namespace _OLC1_PY1_201500332.Logica
                             cadena.errores.Add(new Token(0, i, tok, Token.TIPO.DESCONOCIDO));
                         }
                         tok = "";
-                        if (i < cad.Length - 1 || estado == 0) i--;
+                        if (i < cad.Length - 1 && estado != 0) i--;
                         estado = 0;
                     }
                 }
