@@ -18,6 +18,7 @@ namespace _OLC1_PY1_201500332
         AnalisisSintArch sint;
         Ejecutar ejecutar = new Ejecutar();
         ArrayList erroresLex;
+        int indice = 0;
         public Form1()
         {
             InitializeComponent();
@@ -75,12 +76,14 @@ namespace _OLC1_PY1_201500332
                 {
                     archivo.graficar("AFDs", exp.getId(), exp.afd.dibujar());
                     archivo.graficar("Transiciones", exp.getId(), exp.afd.dibujarTrans(exp.simbolos));
-                }
+                }                
+                consola.Text = "";
                 foreach (CadenaAValidar c in ejecutar.cadenas)
                 {
                     string val = ejecutar.validarLexema(c);
                     consola.Text += c.getId() + ": " + val + "\n";
                 }
+
             }
         }
 
@@ -105,6 +108,47 @@ namespace _OLC1_PY1_201500332
                 ExpresionRegular exp = (ExpresionRegular)ejecutar.expresiones[i];
                 archivo.generarXMLFail(ejecutar.cadenas, exp, "Errores" + exp.getId());
             }
+        }
+
+        private void picant_Click(object sender, EventArgs e)
+        {
+            indice--;
+            if (indice < 0) indice = ejecutar.expresiones.Count - 1;
+            ExpresionRegular exp = (ExpresionRegular)ejecutar.expresiones[indice];
+            Image afn = Image.FromFile("C:\\Users\\Oliveira Raymundo\\Desktop\\ArchivosOLC1PY1\\AFDs\\" + exp.getId() + ".png");
+            Image trans = Image.FromFile("C:\\Users\\Oliveira Raymundo\\Desktop\\ArchivosOLC1PY1\\Transiciones\\" + exp.getId() + ".png");
+            boxafn.Image = afn;
+            boxtrans.Image = trans;
+            boxafn.SizeMode = PictureBoxSizeMode.StretchImage;
+            boxtrans.SizeMode = PictureBoxSizeMode.StretchImage;
+            nombrepic.Text = exp.getId();
+        }
+
+        private void picsig_Click(object sender, EventArgs e)
+        {
+            indice++;
+            if (indice >= ejecutar.expresiones.Count) indice = 0;
+            ExpresionRegular exp = (ExpresionRegular) ejecutar.expresiones[indice];
+            Image afn = Image.FromFile("C:\\Users\\Oliveira Raymundo\\Desktop\\ArchivosOLC1PY1\\AFDs\\" + exp.getId() + ".png");
+            Image trans = Image.FromFile("C:\\Users\\Oliveira Raymundo\\Desktop\\ArchivosOLC1PY1\\Transiciones\\" + exp.getId() + ".png");
+            boxafn.Image = afn;
+            boxtrans.Image = trans;
+            boxafn.SizeMode = PictureBoxSizeMode.StretchImage;
+            boxtrans.SizeMode = PictureBoxSizeMode.StretchImage;
+            nombrepic.Text = exp.getId();
+        }
+
+        private void cargarAFDsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExpresionRegular expresion = (ExpresionRegular)ejecutar.expresiones[0];
+            Image afd = Image.FromFile("C:\\Users\\Oliveira Raymundo\\Desktop\\ArchivosOLC1PY1\\AFDs\\" + expresion.getId() + ".png");
+            Image trans = Image.FromFile("C:\\Users\\Oliveira Raymundo\\Desktop\\ArchivosOLC1PY1\\Transiciones\\" + expresion.getId() + ".png");
+            boxafn.Image = afd;
+            boxtrans.Image = trans;
+            boxafn.SizeMode = PictureBoxSizeMode.StretchImage;
+            boxtrans.SizeMode = PictureBoxSizeMode.StretchImage;
+            nombrepic.Text = expresion.getId();
+            indice = 0;
         }
     }
 

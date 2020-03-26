@@ -54,21 +54,26 @@ namespace _OLC1_PY1_201500332.Logica
                         Movimiento mov = exp.afd.getEstado(estado).getMov(j);
                         if (mov.getTipo() == Token.TIPO.TODO)
                         {
-                            aux = cad.Substring(i, mov.getId().Length);
-                            if (aux.Equals(mov.getId()))
+                            if(cad.Length >= mov.getId().Length)
                             {
-                                edoant = estado;
-                                estado = mov.getMov().getId();
-                                i += mov.getId().Length - 1;
-                                tok += aux;
-                                val = true;
-                                break;
+                                int tam = cad.Length - i + 1;
+                                if(tam >= mov.getId().Length)
+                                {
+                                    aux = cad.Substring(i, mov.getId().Length);
+                                    if (aux.Equals(mov.getId()))
+                                    {
+                                        edoant = estado;
+                                        estado = mov.getMov().getId();
+                                        i += mov.getId().Length - 1;
+                                        tok += aux;
+                                        val = true;
+                                        break;
+                                    }
+                                }
                             }
                         }
                         else if (mov.getTipo() == Token.TIPO.CONJ)
                         {
-
-                            Console.WriteLine(mov.getId());
                             if (mov.getId().Length == 1)
                             {
                                 if (c.ToString() == mov.getId())

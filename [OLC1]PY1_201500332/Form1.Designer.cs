@@ -34,6 +34,11 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.nombrepic = new System.Windows.Forms.Label();
+            this.picsig = new System.Windows.Forms.Button();
+            this.picant = new System.Windows.Forms.Button();
+            this.boxtrans = new System.Windows.Forms.PictureBox();
+            this.boxafn = new System.Windows.Forms.PictureBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.archivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.abrirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,9 +55,13 @@
             this.consola = new System.Windows.Forms.RichTextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.cargarAFDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.pestañas.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.boxtrans)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.boxafn)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.SuspendLayout();
@@ -97,11 +106,62 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.nombrepic);
+            this.panel2.Controls.Add(this.picsig);
+            this.panel2.Controls.Add(this.picant);
+            this.panel2.Controls.Add(this.boxtrans);
+            this.panel2.Controls.Add(this.boxafn);
             this.panel2.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.panel2.Location = new System.Drawing.Point(597, 0);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(479, 695);
             this.panel2.TabIndex = 1;
+            // 
+            // nombrepic
+            // 
+            this.nombrepic.AutoSize = true;
+            this.nombrepic.Location = new System.Drawing.Point(90, 336);
+            this.nombrepic.Name = "nombrepic";
+            this.nombrepic.Size = new System.Drawing.Size(61, 17);
+            this.nombrepic.TabIndex = 9;
+            this.nombrepic.Text = "Ninguna";
+            // 
+            // picsig
+            // 
+            this.picsig.Location = new System.Drawing.Point(359, 325);
+            this.picsig.Name = "picsig";
+            this.picsig.Size = new System.Drawing.Size(93, 35);
+            this.picsig.TabIndex = 8;
+            this.picsig.Text = "Siguiente";
+            this.picsig.UseVisualStyleBackColor = true;
+            this.picsig.Click += new System.EventHandler(this.picsig_Click);
+            // 
+            // picant
+            // 
+            this.picant.Location = new System.Drawing.Point(250, 325);
+            this.picant.Name = "picant";
+            this.picant.Size = new System.Drawing.Size(94, 35);
+            this.picant.TabIndex = 7;
+            this.picant.Text = "Anterior";
+            this.picant.UseVisualStyleBackColor = true;
+            this.picant.Click += new System.EventHandler(this.picant_Click);
+            // 
+            // boxtrans
+            // 
+            this.boxtrans.Location = new System.Drawing.Point(3, 370);
+            this.boxtrans.Name = "boxtrans";
+            this.boxtrans.Size = new System.Drawing.Size(473, 313);
+            this.boxtrans.TabIndex = 6;
+            this.boxtrans.TabStop = false;
+            // 
+            // boxafn
+            // 
+            this.boxafn.Location = new System.Drawing.Point(3, 3);
+            this.boxafn.Name = "boxafn";
+            this.boxafn.Size = new System.Drawing.Size(473, 316);
+            this.boxafn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.boxafn.TabIndex = 5;
+            this.boxafn.TabStop = false;
             // 
             // menuStrip1
             // 
@@ -152,7 +212,8 @@
             this.herramientasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cargarThompsonToolStripMenuItem,
             this.guardarToolStripMenuItem1,
-            this.guardarErroresToolStripMenuItem});
+            this.guardarErroresToolStripMenuItem,
+            this.cargarAFDsToolStripMenuItem});
             this.herramientasToolStripMenuItem.Name = "herramientasToolStripMenuItem";
             this.herramientasToolStripMenuItem.Size = new System.Drawing.Size(112, 24);
             this.herramientasToolStripMenuItem.Text = "Herramientas";
@@ -225,6 +286,13 @@
             // 
             this.saveFileDialog1.Filter = "Archivos ER(*.er)|*.er";
             // 
+            // cargarAFDsToolStripMenuItem
+            // 
+            this.cargarAFDsToolStripMenuItem.Name = "cargarAFDsToolStripMenuItem";
+            this.cargarAFDsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.cargarAFDsToolStripMenuItem.Text = "Cargar AFDs";
+            this.cargarAFDsToolStripMenuItem.Click += new System.EventHandler(this.cargarAFDsToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -240,6 +308,10 @@
             this.panel1.ResumeLayout(false);
             this.pestañas.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.boxtrans)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.boxafn)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panel3.ResumeLayout(false);
@@ -271,6 +343,12 @@
         private System.Windows.Forms.RichTextBox consola;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.PictureBox boxafn;
+        private System.Windows.Forms.Button picsig;
+        private System.Windows.Forms.Button picant;
+        private System.Windows.Forms.PictureBox boxtrans;
+        private System.Windows.Forms.Label nombrepic;
+        private System.Windows.Forms.ToolStripMenuItem cargarAFDsToolStripMenuItem;
     }
 }
 
