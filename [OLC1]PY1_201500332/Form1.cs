@@ -17,6 +17,7 @@ namespace _OLC1_PY1_201500332
         Archivo archivo = new Archivo();
         AnalisisSintArch sint;
         Ejecutar ejecutar = new Ejecutar();
+        ArrayList erroresLex;
         public Form1()
         {
             InitializeComponent();
@@ -57,26 +58,53 @@ namespace _OLC1_PY1_201500332
         private void cargarThompsonToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string graph;
+            ejecutar.expresiones.Clear();
+            ejecutar.cadenas.Clear();
+            ejecutar.conjuntos.Clear();
             if (!this.pestañas.SelectedTab.Controls[0].Text.Equals(""))
             {
                 sint = new AnalisisSintArch();
                 sint.analizar((RichTextBox)this.pestañas.SelectedTab.Controls[0], ejecutar.conjuntos, ejecutar.expresiones, ejecutar.cadenas);
+                erroresLex = sint.lexico.errores;
                 foreach(ExpresionRegular exp in ejecutar.expresiones)
                 {
                     graph = archivo.graficar("AFNs", exp.getId(), exp.getAFN().dibujar());
-                    if (graph.Equals("exito")) MessageBox.Show("AFN creado");
-                    else MessageBox.Show("No se pudo crear el AFN");
                 }
-
+                ejecutar.crearAFD();
+                foreach (ExpresionRegular exp in ejecutar.expresiones)
+                {
+                    archivo.graficar("AFDs", exp.getId(), exp.afd.dibujar());
+                    archivo.graficar("Transiciones", exp.getId(), exp.afd.dibujarTrans(exp.simbolos));
+                }
+                foreach (CadenaAValidar c in ejecutar.cadenas)
+                {
+                    string val = ejecutar.validarLexema(c);
+                    consola.Text += c.getId() + ": " + val + "\n";
+                }
             }
         }
 
         private void lexicToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ejecutar.crearAFD();
-            foreach(ExpresionRegular exp in ejecutar.expresiones)
-                archivo.graficar("AFDs", exp.getId(), exp.afd.dibujar());
+            archivo.generarPDF(erroresLex);
+        }
 
+        private void guardarToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+             for(int i = 0; i < ejecutar.expresiones.Count; i++)
+            {
+                ExpresionRegular exp = (ExpresionRegular) ejecutar.expresiones[i];
+                archivo.generarXMLTok(ejecutar.cadenas, exp, "Tokens" + exp.getId());
+            }
+        }
+
+        private void guardarErroresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < ejecutar.expresiones.Count; i++)
+            {
+                ExpresionRegular exp = (ExpresionRegular)ejecutar.expresiones[i];
+                archivo.generarXMLFail(ejecutar.cadenas, exp, "Errores" + exp.getId());
+            }
         }
     }
 

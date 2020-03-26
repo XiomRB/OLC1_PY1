@@ -14,6 +14,10 @@ namespace _OLC1_PY1_201500332.Logica
         {
             estados = new List<EstadoAFD>();
         }
+        public EstadoAFD getEstado(int e)
+        {
+            return estados[e];
+        }
         public void crearTransiciones(SubAFN afn,Stack<object[]>simbolos)
         {
             EstadoAFD nuevo = new EstadoAFD(0);
@@ -24,14 +28,18 @@ namespace _OLC1_PY1_201500332.Logica
                 for (int i = 0; i < estados[e].getCerraduras().Count; i++)
                 {
                     Estado est = afn.getEstado(estados[e].getCerradura(i)); //entra al estado que indica la cerradura
+                    if (estados[e].getCerradura(i) == afn.getFinal().getId()) estados[e].setAcepta();
                     foreach (TransicionThompson t in est.getTransiciones())
                     {
-                        if (t.getFinal().getId().Equals(afn.getFinal().getId())) estados[e].setAcepta();
-                        if (t.getLexema().Equals("ε") && !estados[e].encontrarC(t.getFinal().getId())) estados[e].setCerradura(t.getFinal().getId());
+                        if (t.getLexema().Equals("ε") && !estados[e].encontrarC(t.getFinal().getId()))
+                        {
+                            estados[e].setCerradura(t.getFinal().getId());
+                            if (t.getFinal().getId().Equals(afn.getFinal().getId())) estados[e].setAcepta();
+                        }
                         else if (!t.getLexema().Equals("ε"))
                         {
-                            int m = encontrarMovimiento(t.getLexema(),estados[e]);
-                            if(m == estados[e].getMovimiento().Count) //si el mover con dicho simbolo no existe
+                            int m = encontrarMovimiento(t.getLexema(), estados[e]);
+                            if (m == estados[e].getMovimiento().Count) //si el mover con dicho simbolo no existe
                             {
                                 Movimiento mov = new Movimiento(t.getLexema(), encontrarSimbolo(simbolos, t.getLexema()));
                                 mov.getMov().setCerradura(t.getFinal().getId());
@@ -44,7 +52,6 @@ namespace _OLC1_PY1_201500332.Logica
                                 estados[e].getMov(m).setMove(t.getFinal().getId());
                                 estados[e].getMov(m).getMov().getCerraduras().Sort();
                             }
-                            
                         }
                     }
                 }
@@ -72,9 +79,6 @@ namespace _OLC1_PY1_201500332.Logica
                         }
                     }
                 }
-                
-                    
-
             }
         }
         public Token.TIPO encontrarSimbolo(Stack<object[]> simbolos, string simbolo)
@@ -120,8 +124,6 @@ namespace _OLC1_PY1_201500332.Logica
         }
         public int encontrarMovEstado(List<int> m,int e)
         {
-            foreach(int n in m)
-                Console.WriteLine(n);
             int i = 0;
             int j = 0;
             bool encontrado = false;
@@ -157,10 +159,89 @@ namespace _OLC1_PY1_201500332.Logica
             }
             dibujo = dibujo.Substring(0,dibujo.Length-2);
             dibujo += " [shape = doublecircle];\n";
-            foreach(EstadoAFD e in estados)
-                foreach(Movimiento m in e.getMovimiento())
-                    dibujo += " S" + e.getId() + " -> S" + m.getMov().getId() + " [label = \"" + m.getId() + "\"];\n";
+            foreach (EstadoAFD e in estados)
+                foreach (Movimiento m in e.getMovimiento())
+                {
+                    string simbolo = m.getId();
+                    if (simbolo.Equals("\\n")) simbolo = "enter";
+                    else if (simbolo.Equals("\\t")) simbolo = "tab";
+                    else if (simbolo.Equals("\\\"")) simbolo = "comilla";
+                    else if (simbolo.Equals("\\\'")) simbolo = "apostrofe";
+                    else if (simbolo.Equals(">")) simbolo = "Mayor que";
+                    else if (simbolo.Equals("<")) simbolo = "Menor que";
+                    dibujo += " S" + e.getId() + " -> S" + m.getMov().getId() + " [label = \"" + simbolo + "\"];\n";
+                }
             return dibujo;
+        }
+        public string dibujarTrans(Stack<object[]> simbolos)
+        {
+            List<object[]> simbs = modifSimbolos(simbolos);
+            string[,] tabla = new string[estados.Count + 1,simbs.Count + 1];
+            string dibujo = "node [shape = record];\n t [label = \"{";
+            tabla[0, 0] = "ESTADO";
+            for(int i =0; i < simbs.Count; i++)
+            {
+                object[] s = simbs.ElementAt(i);
+                tabla[0, i + 1] = s[0].ToString();
+            }
+            for(int i = 0; i < estados.Count; i++)
+            {
+                tabla[i + 1, 0] = estados[i].getId().ToString();
+                for(int j = 0; j < estados[i].getMovimiento().Count; j++)
+                {
+                    string lex = estados[i].getMov(j).getId();
+                    string sig = estados[i].getMov(j).getMov().getId().ToString();
+                    string lexema;
+                    int posicion = 0;
+                    while(posicion < simbs.Count)
+                    {
+                        lexema = simbs.ElementAt(posicion)[0].ToString();
+                        if (lexema.Equals(lex)) break;
+                        posicion++;
+                    }
+                    tabla[i + 1, posicion + 1] = sig;
+                }
+            }
+            for(int i = 0; i < (simbs.Count + 1); i++)
+            {
+                for(int j = 0; j < (estados.Count + 1); j++)
+                {
+                    string simbolo = tabla[j, i];
+                    if(simbolo != null)
+                    {
+                        if (simbolo.Equals("\\n")) simbolo = "enter";
+                        else if (simbolo.Equals("\\t")) simbolo = "tab";
+                        else if (simbolo.Equals("\\\"")) simbolo = "comilla";
+                        else if (simbolo.Equals("\\\'")) simbolo = "apostrofe";
+                        else if (simbolo.Equals(">")) simbolo = "Mayor que";
+                        else if (simbolo.Equals("<")) simbolo = "Menor que";
+                    }
+                    if (j == estados.Count) dibujo += "\\\"" + simbolo + "\\\"}";
+                    else dibujo += "\\\"" + simbolo + "\\\"|";
+                }
+                if (i != simbs.Count) dibujo += "|{";
+                else dibujo += "\"];";
+            }
+            return dibujo;
+        }
+
+        public List<object[]> modifSimbolos(Stack<object[]> simbolos)
+        {
+            List<object[]> simbs = simbolos.ToList();
+            for(int i = 0; i < simbs.Count; i++)
+            {
+                string s = simbs.ElementAt(i)[0].ToString();
+                for(int j = 0; j < i; j++)
+                {
+                    string simb = simbs.ElementAt(j)[0].ToString();
+                    if (s.Equals(simb))
+                    {
+                        simbs.Remove(simbs.ElementAt(j));
+                        i--;
+                    }
+                }
+            }
+            return simbs;
         }
     }
 }

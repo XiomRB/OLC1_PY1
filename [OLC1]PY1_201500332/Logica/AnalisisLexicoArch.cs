@@ -301,7 +301,15 @@ namespace _OLC1_PY1_201500332.Logica
                         {
                             estado = 26;
                             token += caracter;
-                        }else validarToken(texto.GetLineFromCharIndex(i), texto.GetPositionFromCharIndex(i).Y, Token.TIPO.CONJ);
+                        }
+                        else if(caracter == ';') validarToken(texto.GetLineFromCharIndex(i), texto.GetPositionFromCharIndex(i).Y, Token.TIPO.CONJ);
+                        else
+                        {
+                            if (token.Equals("\\n"))  validarToken(texto.GetLineFromCharIndex(i), texto.GetPositionFromCharIndex(i).Y, Token.TIPO.ENTER);                     
+                            else if (token.Equals("\\t")) validarToken(texto.GetLineFromCharIndex(i), texto.GetPositionFromCharIndex(i).Y, Token.TIPO.TAB);
+                            else if (token.Equals("\\\'")) validarToken(texto.GetLineFromCharIndex(i), texto.GetPositionFromCharIndex(i).Y, Token.TIPO.APOSTROFE);
+                            else if (token.Equals("\\\"")) validarToken(texto.GetLineFromCharIndex(i), texto.GetPositionFromCharIndex(i).Y, Token.TIPO.COMILLA);
+                        }
                         break;
                     case 20:
                         if (caracter == '!')

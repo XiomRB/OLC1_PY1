@@ -160,21 +160,23 @@
             // cargarThompsonToolStripMenuItem
             // 
             this.cargarThompsonToolStripMenuItem.Name = "cargarThompsonToolStripMenuItem";
-            this.cargarThompsonToolStripMenuItem.Size = new System.Drawing.Size(210, 26);
+            this.cargarThompsonToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.cargarThompsonToolStripMenuItem.Text = "Cargar Thompson";
             this.cargarThompsonToolStripMenuItem.Click += new System.EventHandler(this.cargarThompsonToolStripMenuItem_Click);
             // 
             // guardarToolStripMenuItem1
             // 
             this.guardarToolStripMenuItem1.Name = "guardarToolStripMenuItem1";
-            this.guardarToolStripMenuItem1.Size = new System.Drawing.Size(210, 26);
+            this.guardarToolStripMenuItem1.Size = new System.Drawing.Size(224, 26);
             this.guardarToolStripMenuItem1.Text = "Guardar Tokens";
+            this.guardarToolStripMenuItem1.Click += new System.EventHandler(this.guardarToolStripMenuItem1_Click);
             // 
             // guardarErroresToolStripMenuItem
             // 
             this.guardarErroresToolStripMenuItem.Name = "guardarErroresToolStripMenuItem";
-            this.guardarErroresToolStripMenuItem.Size = new System.Drawing.Size(210, 26);
+            this.guardarErroresToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.guardarErroresToolStripMenuItem.Text = "Guardar Errores";
+            this.guardarErroresToolStripMenuItem.Click += new System.EventHandler(this.guardarErroresToolStripMenuItem_Click);
             // 
             // reportesToolStripMenuItem
             // 
@@ -187,7 +189,7 @@
             // lexicToolStripMenuItem
             // 
             this.lexicToolStripMenuItem.Name = "lexicToolStripMenuItem";
-            this.lexicToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.lexicToolStripMenuItem.Size = new System.Drawing.Size(187, 26);
             this.lexicToolStripMenuItem.Text = "Errores lexicos";
             this.lexicToolStripMenuItem.Click += new System.EventHandler(this.lexicToolStripMenuItem_Click);
             // 

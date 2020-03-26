@@ -54,11 +54,20 @@ namespace _OLC1_PY1_201500332.Logica
 
         public string dibujar()
         {
-            string dibujo = " rankdir = LR;\n  node[shape = circle];\n ";
+            string dibujo = " rankdir = LR;\n node[shape = circle];\n ";
             dibujo += this.getFinal().getId() + " [shape = doublecircle] " + ";\n";
             foreach (Estado e in this.estados)
                 foreach (TransicionThompson t in e.getTransiciones())
-                    dibujo +=" " + t.getInicio().getId() + " -> " + t.getFinal().getId() + "[label = \"" + t.getLexema() + "\"];\n";
+                {
+                    string simbolo = t.getLexema();
+                    if (simbolo.Equals("\\n")) simbolo = "enter";
+                    else if (simbolo.Equals("\\t")) simbolo = "tab";
+                    else if (simbolo.Equals("\\\"")) simbolo = "comilla";
+                    else if (simbolo.Equals("\\\'")) simbolo = "apostrofe";
+                    else if (simbolo.Equals(">")) simbolo = "Mayor que";
+                    else if (simbolo.Equals("<")) simbolo = "Menor que";
+                    dibujo += " " + t.getInicio().getId() + " -> " + t.getFinal().getId() + "[label = \"" + simbolo + "\"];\n";
+                }
             return dibujo;
         }
     }

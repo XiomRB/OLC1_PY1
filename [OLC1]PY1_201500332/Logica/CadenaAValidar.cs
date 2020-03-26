@@ -10,10 +10,14 @@ namespace _OLC1_PY1_201500332.Logica
     {
         private string id;
         private string cadena;
+        public List<Token> tokens;
+        public List<Token> errores;
         public CadenaAValidar(string id, string cadena)
         {
             this.id = id;
             this.cadena = cadena;
+            tokens = new List<Token>();
+            errores = new List<Token>();
         }
         public string getId()
         {

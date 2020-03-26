@@ -10,7 +10,7 @@ namespace _OLC1_PY1_201500332.Logica
 {
     class AnalisisSintArch
     {
-        AnalisisLexicoArch lexico;
+        public AnalisisLexicoArch lexico;
         PrincipalAFN p = new PrincipalAFN();
         int i = 0;
         public AnalisisSintArch()
